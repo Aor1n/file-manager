@@ -3,6 +3,8 @@ import { homedir } from 'node:os'
 import { createInterface } from 'node:readline/promises'
 
 import { COMMAND } from './consts.js'
+import { getCmdValues } from './helpers.js'
+
 import {
     handleUp,
     handleCd,
@@ -17,8 +19,7 @@ import {
     handleHash,
     handleCompress,
     handleDecompress
-} from './commands.js'
-import { getCmdValues } from './helpers.js'
+} from './modules/index.js'
 
 const readLine = createInterface({ input: stdin, output: stdout })
 

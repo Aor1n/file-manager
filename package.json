@@ -2,6 +2,10 @@
   "name": "file-manager",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "author": "vladislav chernyshov",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  }
 }

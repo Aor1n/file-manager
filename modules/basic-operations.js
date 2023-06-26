@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import { createReadStream, createWriteStream } from 'node:fs'
 import { stdout } from 'node:process'
-import { rename, rm, unlink, writeFile } from 'node:fs/promises'
+import { rename, rm, unlink, writeFile, access } from 'node:fs/promises'
 import { pipeline } from 'node:stream/promises'
 
 import { catchMessage, getCmdValues } from '../helpers.js'
@@ -11,6 +11,8 @@ const handleCat = async (inputMessage) => {
     const resolvedPath = resolve(pathToResolve)
 
     try {
+        await access(resolvedPath)
+
         const reader = createReadStream(resolvedPath, { encoding: 'utf8' })
 
         reader.pipe(stdout)
@@ -34,6 +36,8 @@ const handleRn = async (inputMessage) => {
     const [oldPath, newPath] = getCmdValues(inputMessage)
 
     try {
+        await access(oldPath)
+
         await rename(oldPath, newPath)
     } catch {
         catchMessage()
@@ -44,6 +48,8 @@ const handleCp = async (inputMessage) => {
     const [filePath, copyPath] = getCmdValues(inputMessage)
 
     try {
+        await access(filePath
+        )
         const reader = createReadStream(filePath)
         const writer = createWriteStream(copyPath)
 
@@ -57,6 +63,8 @@ const handleMv = async (inputMessage) => {
     const [fileToMove] = getCmdValues(inputMessage)
 
     try {
+        await access(fileToMove)
+
         await handleCp(inputMessage)
 
         await unlink(fileToMove)
@@ -69,6 +77,8 @@ const handleRm = async (inputMessage) => {
     const [filePath] = getCmdValues(inputMessage)
 
     try {
+        await access(filePath)
+
         await rm(filePath)
     } catch {
         catchMessage()

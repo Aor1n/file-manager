@@ -1,5 +1,6 @@
 import { createBrotliCompress, createBrotliDecompress } from 'node:zlib'
 import { createReadStream, createWriteStream } from 'node:fs'
+import { access } from 'node:fs/promises'
 import { pipeline } from 'node:stream/promises'
 
 import { catchMessage, getCmdValues } from '../helpers.js'
@@ -8,6 +9,8 @@ const handleCompress = async (inputMessage) => {
     const [fileToCompress, compressedPath] = getCmdValues(inputMessage)
 
     try {
+        await access(fileToCompress)
+
         const brotliCompress = createBrotliCompress()
         const reader = createReadStream(fileToCompress)
         const writer = createWriteStream(compressedPath)
